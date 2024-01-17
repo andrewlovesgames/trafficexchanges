@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Displaying Webpages in iframes with Interaction</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* Hide scroll bars for the body */
+    }
+
+    .number {
+      font-size: 2em;
+      margin: 10px;
+      cursor: pointer; /* Add cursor pointer to show it's clickable */
+    }
+
+    .iframe-container {
+      width: 100%;
+      height: 50%;
+      overflow-y: auto; /* Enable vertical scrolling for the iframe container */
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%; /* Take full height of the iframe container */
+      border: none;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column; /* Display vertically */
+      align-items: stretch;
+      height: 100%;
+      width: 100%;
+    }
+
+    .iframe-container {
+      flex: 1;
+      margin: 10px;
+      overflow: hidden; /* Hide any potential overflow */
+    }
+
+    .score {
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="random-numbers">
+    <!-- Generate and display random numbers from 1 to 5 -->
+    <span class="number" id="number1" onclick="generateRandomNumbers()">1</span>
+    <span class="number" id="number2" onclick="generateRandomNumbers()">2</span>
+    <span class="number" id="number3" onclick="generateRandomNumbers()">3</span>
+    <span class="number" id="number4" onclick="generateRandomNumbers()">4</span>
+    <span class="number" id="number5" onclick="generateRandomNumbers()">5</span>
+  </div>
+
+  <div class="container">
+    <div class="iframe-container">
+      <iframe src="https://lllpg.com/588zh4db/"></iframe>
+    </div>
+    
+    <div class="iframe-container">
+      <iframe id="secondIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <div id="score">
+    Score: <span id="secondIframeScore">0</span>
+  </div>
+
+  <script>
+    const websites = [
+      "https://hungryforhits.com",
+      "https://easyonlineadvertising.com"
+    ];
+    const scores = {
+      "https://hungryforhits.com": 0,
+      "https://easyonlineadvertising.com": 0
+    };
+    const iframeElement = document.getElementById('secondIframe');
+    let currentIndex = 0;
+
+    function generateRandomNumbers() {
+      const numbers = [1, 2, 3, 4, 5];
+      for (let i = numbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+      }
+
+      document.getElementById('number1').innerText = numbers[0];
+      document.getElementById('number2').innerText = numbers[1];
+      document.getElementById('number3').innerText = numbers[2];
+      document.getElementById('number4').innerText = numbers[3];
+      document.getElementById('number5').innerText = numbers[4];
+    }
+
+    function loadNextWebsite() {
+      const currentWebsite = websites[currentIndex];
+
+      scores[currentWebsite] += 1; // Increment the score for the current website
+      updateScore(); // Update the displayed score
+
+      iframeElement.src = currentWebsite;
+      currentIndex = (currentIndex + 1) % websites.length;
+    }
+
+    function updateScore() {
+      document.getElementById('secondIframeScore').innerText = scores[websites[currentIndex]];
+    }
+
+    function startRotatingWebsites() {
+      loadNextWebsite();
+      setInterval(loadNextWebsite, 5000); // Change website every 5 seconds
+    }
+
+    generateRandomNumbers();
+    startRotatingWebsites();
+  </script>
+</body>
+</html>
